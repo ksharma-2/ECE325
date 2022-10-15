@@ -20,8 +20,9 @@ public class InventoryItem {
 		this.inInventory = need;
 		this.inBus = 0;
 		this.isWrapped = false;
-
 	}
+
+
 	
 	public Equipment getEquipment() {
 		return equipment;
@@ -53,15 +54,18 @@ public class InventoryItem {
 	 * @param number of equipment that you want to add to bus
 	 */
 	public void addToBus(int number) {
-		if ((inBus + number) < this.getInInventory()){
+		if ((inBus + number) <= this.getInInventory()){
 			this.inBus += number;
+		} else {
+			System.out.println("Taking too many, we can only take" + this.getInInventory());
+			this.inBus = this.getInInventory();
 		}
 	}
 	
 	/**
 	 * Add equipment to Inventory. For example, if this inventory item holds a chair, and you call addToInventory(5), you will
 	 * add 5 chairs to the inventory.
-	 * @param number of equipment that you want to add to bus
+	 * @param number of equipment that you want to add to inventory
 	 */
 	public void addToInventory(int number) {
 		this.inInventory += number;

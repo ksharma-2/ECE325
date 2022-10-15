@@ -7,7 +7,10 @@ public class EquipmentInventory {
 	ArrayList<InventoryItem> inventory;
 
 	public EquipmentInventory() {
+		this.inventory = new ArrayList<InventoryItem>();
 	}
+
+
 
 	/**
 	 * Stow equipment into the trunk of the bus. Note: every type of equipment
@@ -18,9 +21,11 @@ public class EquipmentInventory {
 	 * @param number The number of items to stow
 	 */
 	public void addEquipmentToBus(Equipment equip, int number) {
-		InventoryItem item = new InventoryItem(equip, number);
-		inventory.add(item);
-		inventory.get(inventory.indexOf(item)).addToBus(number);
+		Integer i = 0;
+		while(!inventory.get(i).getEquipment().equals(equip)){
+			i++;
+		}
+		inventory.get(i).addToBus(number);
 	}
 
 	/**
@@ -35,7 +40,7 @@ public class EquipmentInventory {
 		InventoryItem item = new InventoryItem(equip, number);
 		if (!inventory.contains(item)){
 			inventory.add(item);
-		}	
+		}
 	}
 
 	
@@ -51,7 +56,6 @@ public class EquipmentInventory {
 				missingItems.add(inventory.get(i));
 			}
 		}
-
 		return missingItems;
 	}
 
@@ -64,7 +68,7 @@ public class EquipmentInventory {
 		ArrayList<InventoryItem> needsWrapping = new ArrayList<InventoryItem>();
 
 		for (int i = 0; i < inventory.size(); i++){
-			if(!inventory.get(i).needsWrapping()){
+			if(!inventory.get(i).needsWrapping() && inventory.get(i).getEquipment().getNeedsWrapping()){
 				needsWrapping.add(inventory.get(i));
 			}
 		}
@@ -78,14 +82,23 @@ public class EquipmentInventory {
 	 * @param The type of equipment you want to wrap. 
 	 */
 	public void wrapItems(Equipment e) {
-		inventory.get(inventory.indexOf(e));
+		Integer i = 0;
+		while(!inventory.get(i).getEquipment().equals(e)){
+			i++;
+		}
+		inventory.get(i).wrap();
 	}
 
 	/** 
 	 * Returns a string representation of the inventory.
 	 */
 	public String toString() {
+		StringBuffer str = new StringBuffer();
 
+		for (int i = 0; i < inventory.size(); i++){
+			str.append(inventory.get(i).getEquipment() + "\n");
+		}
+		return str.toString();
 	}
 
 	/** 
@@ -94,16 +107,25 @@ public class EquipmentInventory {
 	 */
 	public boolean getReadyToGo() {
 
+		if(this.getNeedsWrappingItems().size() != 0 || this.getMissingItems().size() != 0){
+			return false;
+		}
+
+		return true;
+	
 	}
 
 	public static void main(String[] args) {
 		
 		EquipmentInventory myInv = new EquipmentInventory();
 		//Add 2 microphones, 4 guitars and 12 chairs to Equipment Inventory
-		
-		/*
-		 * Fill out code here
-		 */
+		Instruments microphone = new Instruments("microphone");
+		Instruments guitar = new Instruments("guitar");
+		Extras chair = new Extras("chair");
+
+		myInv.addEquipmentToInventory(microphone, 2);
+		myInv.addEquipmentToInventory(guitar, 4);
+		myInv.addEquipmentToInventory(chair, 12);
 
 		System.out.println(myInv);
 
@@ -116,6 +138,7 @@ public class EquipmentInventory {
 		System.out.println(needsWrapping);
 		
 		//Try to add 15 chairs to bus
+		myInv.addEquipmentToBus(chair, 15);
 		
 		/*
 		 * Fill out code here
@@ -131,6 +154,9 @@ public class EquipmentInventory {
 		 * Fill out code here
 		 */
 		
+		myInv.addEquipmentToBus(guitar, 4);
+		myInv.addEquipmentToBus(microphone, 2);
+
 		System.out.println(myInv.getReadyToGo());
 
 		//Wrap items that need wrapping but have not been wrapped yet
@@ -138,6 +164,8 @@ public class EquipmentInventory {
 		/*
 		 * Fill out code here
 		 */
+		myInv.wrapItems(microphone);
+		myInv.wrapItems(guitar);
 
 		System.out.println(myInv.getReadyToGo());
 		

@@ -7,8 +7,8 @@ public abstract class Equipment {
 	 * Constructor
 	 * @param a boolean that indicates whether this type of equipment needs wrapping or not
 	 */
-	public Equipment(boolean needsWrapping) {
-		this.needsWrapping = needsWrapping;
+	public Equipment() {
+		this.needsWrapping = false;
 	}
 	
 	public void setNeedsWrapping(boolean needsWrapping) {
@@ -24,7 +24,7 @@ public abstract class Equipment {
 	 * @param other equipment
 	 */
 	public boolean equals(Equipment e) {
-		return this.equals(e);
+		return (this == e);
 	}
 	
 	public abstract String toString();
